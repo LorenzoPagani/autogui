@@ -50,3 +50,34 @@ Configuration
 Safety and permissions
 - The script controls keyboard input using `pyautogui`. Keep focus on a safe window when running.
 - On some systems additional permissions or UAC prompts may be needed to allow synthetic input. If you run into permission errors, run terminal as Administrator.
+
+Packaging to a Windows executable
+--------------------------------
+
+This repository includes two helpers to build a standalone Windows executable (EXE): a PowerShell script `build_exe.ps1` and a cross-platform Python helper `build.py`.
+
+PowerShell (recommended on Windows)
+
+1. Open PowerShell in this project folder.
+2. (Optional) Run as Administrator if you need to install system packages.
+3. Run:
+
+```powershell
+.\build_exe.ps1 -Clean
+```
+
+This will create a `.venv` virtual environment, install dependencies from `requirements.txt`, install `pyinstaller`, and run PyInstaller to produce a single-file `autoguiexercise.exe` in the `dist\` folder.
+
+Python helper (cross-platform)
+
+You can also run the Python helper which performs the same steps programmatically:
+
+```powershell
+# create venv and build (from project root)
+py -3 build.py --clean --onefile
+```
+
+Notes
+- The produced executable is a single-file binary when `--onefile` is used. The first launch may take a few seconds while the bundled app unpacks.
+- Antivirus or Windows SmartScreen may warn about unsigned binaries. If you distribute the exe publicly, consider code signing.
+- Building produces folders `build/`, `dist/` and a spec file `autoguiexercise.spec` in the project root. Use the `-Clean` flag to remove previous builds before packaging.
